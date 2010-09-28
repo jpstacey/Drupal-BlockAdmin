@@ -1,0 +1,14 @@
+/**
+ * @file filters.css
+ * Block Admin CSS
+ */
+.blockadmin-hide {
+  display: none;
+}
+html.js #blockadmin-form-filter .form-submit {
+  display: none;
+}
+
+#edit-filter-wrapper > * {
+  display: inline;
+}

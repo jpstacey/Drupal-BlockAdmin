@@ -1,0 +1,15 @@
+Block Admin
+===========
+
+Drupal's core admin/build/block does not scale. Beyond around 15-20 blocks,
+the list is well over a page long, and it can be hard to work out what 
+blocks should go where. By 50 blocks, the UI has become unuseable.
+
+This module takes a step towards making the admin/build/block page scale 
+for 20-100 blocks, by adding a filter to only display blocks added by any 
+given module specified by the user. This allows the user to at least move
+the block to the right region, then submit (or reveal all blocks) and then
+fine-tune the sorting.
+
+It works in the browser with Javascript but also degrades nicely if
+Javascript is not available.

@@ -1,0 +1,8 @@
+; $Id$
+; Info file for Block Admin module
+name = Block Admin
+description = Administer blocks better
+core = 6.x
+
+dependencies[] = block
+package = Administration

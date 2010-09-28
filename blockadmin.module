@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * @file blockadmin.module
+ * Block Admin
+ */
+
+/**
+ * Implementation of hook_preprocess_FORM
+ */
+function blockadmin_preprocess_block_admin_display_form(&$vars, $hook) {
+  // Loop over all blocks and find out what modules they come from
+  $modules = array();
+  foreach($vars['block_listing'] as $region => $blocks) {
+    foreach($blocks as $name => &$block) {
+      // Find the module and add it to our array
+      $module = $vars['form'][$name]["module"]["#value"];
+      $modules[$module] = $module;
+
+      // Add a HTML class for this row stating the module module
+      $block->row_class .= " blockadmin-block blockadmin-block-$module";
+      // Add hide classes for CSS in case of no Javascript
+      if ($_GET['filter'] && ($_GET['filter'] != $module)) {
+        $block->row_class .= " blockadmin-hide";
+      }
+    }
+  }
+
+  // Sort the list of modules alphanumerically and cache it for 
+  // when we create the filters form later
+  ksort($modules);
+  _blockadmin_cache($modules);
+
+  // Add some Javascript and some CSS to power the in-browser filtering
+  drupal_add_js(drupal_get_path("module", "blockadmin") . "/js/filters.js");
+  drupal_add_css(drupal_get_path("module", "blockadmin") . "/css/filters.css");
+}
+
+function _blockadmin_cache($modules = NULL) {
+  static $store;
+  if (isset($modules)) { $store = $modules; }
+  return $store;
+}
+
+/**
+ * Implementation of hook_preprocess_page
+ */
+function blockadmin_preprocess_page(&$vars) {
+  $vars['content'] = drupal_get_form("blockadmin_form_filter") . $vars['content'];
+}
+
+/**
+ * Form API callback: filters form
+ */
+function blockadmin_form_filter(&$form_state) {
+  // Filter select dropdown
+  $form['filter'] = array(
+    '#type' => 'select',
+    '#title' => 'Select a module to filter on',
+    '#options' => array('' => '(all)'),
+    '#attributes' => array('id' => 'blockadmin-master-filter'),
+    '#default_value' => $_GET['filter'] ? $_GET['filter'] : '',
+  );
+  // Retrieve module list from the cache and merge it in
+  $modules = _blockadmin_cache();
+  is_array($modules) && ($form['filter']['#options'] += $modules);
+
+  // Add a submit button for accessibility!
+  $form['go'] = array(
+    '#type' => 'submit',
+    '#value' => t("Go"),
+  );
+
+  return $form;
+}
+
+/**
+ * Form API submit callback
+ */
+function blockadmin_form_filter_submit($form, $form_state) {
+  // Redirect a POST request to a GET request with ?filter=...
+  $f = $form_state['values']['filter'];
+  $f && drupal_goto($_GET['q'], array('filter' => $f));
+}
