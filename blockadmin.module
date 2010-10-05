@@ -46,7 +46,9 @@ function _blockadmin_cache($modules = NULL) {
  * Implementation of hook_preprocess_page
  */
 function blockadmin_preprocess_page(&$vars) {
-  $vars['content'] = drupal_get_form("blockadmin_form_filter") . $vars['content'];
+  if ($_GET['q'] == 'admin/build/block') {
+    $vars['content'] = drupal_get_form("blockadmin_form_filter") . $vars['content'];
+  }
 }
 
 /**
