@@ -47,7 +47,10 @@ function _blockadmin_cache($modules = NULL) {
  */
 function blockadmin_preprocess_page(&$vars) {
   if (strpos($_GET['q'],'admin/build/block') === 0) {
-    $vars['content'] = drupal_get_form("blockadmin_form_filter") . $vars['content'];
+    $subpage = arg(3);
+    if ($subpage === NULL || $subpage == "list") {
+      $vars['content'] = drupal_get_form("blockadmin_form_filter") . $vars['content'];
+    }
   }
 }
 
