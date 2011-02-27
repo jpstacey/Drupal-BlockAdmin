@@ -1,6 +1,8 @@
 Block Admin
 ===========
 
+This project is now hosted at http://drupal.org/project/blockadmin .
+
 Drupal's core admin/build/block does not scale. Beyond around 15-20 blocks,
 the list is well over a page long, and it can be hard to work out what 
 blocks should go where. By 50 blocks, the UI has become unuseable.
@@ -13,3 +15,5 @@ fine-tune the sorting.
 
 It works in the browser with Javascript but also degrades nicely if
 Javascript is not available.
+
+(Originally a Github project: https://github.com/jpstacey/Drupal-BlockAdmin)
